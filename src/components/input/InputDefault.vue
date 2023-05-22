@@ -6,7 +6,12 @@ const { value } = defineProps<{
   placeholder?: string
 }>()
 const isFocus = ref<boolean>(false)
-defineEmits(['update:value'])
+const emit = defineEmits(['update:value'])
+
+const onChange = (event: Event) => {
+  const target = <HTMLInputElement>event.target
+  emit('update:value', target.value)
+}
 </script>
 
 <template>
@@ -19,7 +24,7 @@ defineEmits(['update:value'])
       @focusout="isFocus = false"
       :placeholder="placeholder"
       :value="value"
-      @input="$emit('update:value', $event.target.value)"
+      @input="onChange"
     />
     <slot name="endIcon" />
   </div>

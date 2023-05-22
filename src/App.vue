@@ -21,7 +21,9 @@ const keyword = ref<string>('')
 const sortType = ref<'ASC' | 'DESC' | 'DEFAULT'>('DEFAULT')
 
 onMounted(() => {
-  taskList.value = localStorage.getItem(TASK_KEY) ? JSON.parse(localStorage.getItem(TASK_KEY)) : []
+  taskList.value = localStorage.getItem(TASK_KEY)
+    ? JSON.parse(localStorage.getItem(TASK_KEY) as string)
+    : []
 })
 
 const taskListFilter = computed(() => {
@@ -42,7 +44,7 @@ const taskListFilter = computed(() => {
 
   if (sortType.value === 'ASC') {
     result.sort((a, b) => b.name.localeCompare(a.name))
-  } else {
+  } else if (sortType.value === 'DESC') {
     result.sort((a, b) => a.name.localeCompare(b.name))
   }
 
