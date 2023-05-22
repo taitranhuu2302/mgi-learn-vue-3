@@ -61,6 +61,7 @@ const changeStatusTask = (id: string, status: TaskItemStatusType) => {
   if (!task) return
 
   task.status = status
+  localStorage.setItem(TASK_KEY, JSON.stringify(taskList.value))
 }
 
 const updateLocalstorage = () => {
@@ -117,11 +118,11 @@ const onClearTasks = () => {
         <input-default class="flex-grow" v-model:value="keyword" placeholder="Search...">
           <template #startIcon><i class="fal fa-search text-xl"></i></template>
         </input-default>
-        <button @click="sortType = 'ASC'">
-          <i class="fas fa-sort-alpha-up text-xl"></i>
+        <button class="btn-sort" @click="sortType = 'ASC'">
+          <i class="fas fa-sort-alpha-up"></i>
         </button>
-        <button @click="sortType = 'DESC'">
-          <i class="fas fa-sort-alpha-down text-xl"></i>
+        <button class="btn-sort" @click="sortType = 'DESC'">
+          <i class="fas fa-sort-alpha-down"></i>
         </button>
       </div>
       <div class="flex items-center justify-between gap-2.5 flex-wrap mt-3">
@@ -163,16 +164,12 @@ const onClearTasks = () => {
           <button
             @click="createOrUpdateTask"
             v-show="isTaskTyping"
-            class="bg-primary-500 hover:bg-opacity-95 px-2.5 rounded text-white"
+            class="btn-form-add bg-primary-500"
           >
             <template v-if="!taskObj.id">Add</template>
             <template v-if="taskObj.id">Edit</template>
           </button>
-          <button
-            v-if="taskObj.id"
-            @click="resetTask"
-            class="bg-red-500 hover:bg-opacity-95 px-2.5 rounded text-white"
-          >
+          <button v-if="taskObj.id" @click="resetTask" class="btn-form-add bg-red-500">
             Reset
           </button>
         </template>
@@ -200,5 +197,13 @@ const onClearTasks = () => {
 
 .task-list {
   @apply flex flex-col h-[340px] overflow-y-auto;
+}
+
+.btn-form-add {
+  @apply hover:bg-opacity-95 px-2.5 rounded text-white;
+}
+
+.btn-sort {
+  @apply text-xl;
 }
 </style>
