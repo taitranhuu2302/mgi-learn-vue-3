@@ -3,7 +3,6 @@ import TaskItem from '@/components/TaskItem.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
 import InputDefault from '@/components/input/InputDefault.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
-import { v4 as uuidV4 } from 'uuid'
 
 const TASK_KEY = 'tasks'
 type ActiveTabType = 'All' | 'Pending' | 'Completed'
@@ -75,7 +74,7 @@ const createOrUpdateTask = () => {
     // ADD
     const newTask: TaskItemType = {
       ...taskObj,
-      id: uuidV4(),
+      id: new Date().getTime().toString(),
       createdAt: new Date()
     }
     taskList.value = [newTask, ...taskList.value]
