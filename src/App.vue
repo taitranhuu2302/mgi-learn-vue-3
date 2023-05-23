@@ -141,7 +141,7 @@ const checkActiveTab = (type: ActiveTabType) => activeTabs.value === type
       </div>
       <div class="border border-gray-300 my-4"></div>
       <ul class="task-list">
-        <li v-if="taskListFilter.length <= 0" class="text-lg">You don't have any task here</li>
+        <li v-if="!taskListFilter.length" class="text-lg">You don't have any task here</li>
         <template v-for="task in taskListFilter" :key="task.id">
           <task-item
             @onDeleteTask="onDeleteTask"
@@ -163,8 +163,7 @@ const checkActiveTab = (type: ActiveTabType) => activeTabs.value === type
             v-show="isTaskTyping"
             class="btn-form-add bg-primary-500"
           >
-            <template v-if="!taskObj.id">Add</template>
-            <template v-if="taskObj.id">Edit</template>
+            {{ taskObj.id ? 'Edit' : 'Add' }}
           </button>
           <button v-if="taskObj.id" @click="resetTask" class="btn-form-add bg-red-500">
             Reset
