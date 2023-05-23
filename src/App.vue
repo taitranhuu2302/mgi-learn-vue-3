@@ -27,19 +27,15 @@ onMounted(() => {
 
 const taskListFilter = computed(() => {
   const search = keyword.value.toLowerCase()
-  let result: TaskItemType[] = []
+  let result: TaskItemType[] = taskList.value
 
   if (activeTabs.value === 'Pending') {
-    result = taskList.value.filter(
-      (item) => item.status === 'PENDING' && item.name.toLowerCase().includes(search)
-    )
+    result = result.filter((item) => item.status === 'PENDING')
   } else if (activeTabs.value === 'Completed') {
-    result = taskList.value.filter(
-      (item) => item.status === 'COMPLETED' && item.name.toLowerCase().includes(search)
-    )
-  } else {
-    result = taskList.value.filter((item) => item.name.toLowerCase().includes(search))
+    result = result.filter((item) => item.status === 'COMPLETED')
   }
+
+  result = result.filter((item) => item.name.toLowerCase().includes(search))
 
   if (sortType.value === 'ASC') {
     result.sort((a, b) => b.name.localeCompare(a.name))
@@ -107,6 +103,8 @@ const onClearTasks = () => {
   taskList.value = []
   updateLocalstorage()
 }
+
+const checkActiveTab = (type: ActiveTabType) => activeTabs.value === type
 </script>
 
 <template>
@@ -126,11 +124,11 @@ const onClearTasks = () => {
       </div>
       <div class="flex items-center justify-between gap-2.5 flex-wrap mt-3">
         <ul class="tabs">
-          <li @click="activeTabs = 'All'" :class="{ active: activeTabs === 'All' }">All</li>
-          <li @click="activeTabs = 'Pending'" :class="{ active: activeTabs === 'Pending' }">
+          <li @click="activeTabs = 'All'" :class="{ active: checkActiveTab('All') }">All</li>
+          <li @click="activeTabs = 'Pending'" :class="{ active: checkActiveTab('Pending') }">
             Pending
           </li>
-          <li @click="activeTabs = 'Completed'" :class="{ active: activeTabs === 'Completed' }">
+          <li @click="activeTabs = 'Completed'" :class="{ active: checkActiveTab('Completed') }">
             Completed
           </li>
         </ul>
